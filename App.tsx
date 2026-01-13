@@ -150,10 +150,10 @@ const App: React.FC = () => {
       `}>
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3 font-extrabold text-xl tracking-tighter text-white">
-            <div className="w-8 h-8 bg-[#ff3366] rounded-lg flex items-center justify-center shadow-lg">
-              <i className="fas fa-terminal text-white text-xs"></i>
+            <div className="w-8 h-8 bg-gradient-to-br from-[#ff3366] to-[#7000ff] rounded-lg flex items-center justify-center shadow-lg shadow-[#ff3366]/20">
+              <i className="fas fa-code text-white text-[10px]"></i>
             </div>
-            <span>DSA Master</span>
+            <span>DSA Mentor <span className="text-[#ff3366] ml-0.5">PRO</span></span>
           </div>
           <button onClick={() => setIsSidebarOpen(false)} className="md:hidden text-gray-500"><i className="fas fa-times text-xl"></i></button>
         </div>
@@ -209,15 +209,28 @@ const App: React.FC = () => {
           <div className="max-w-3xl mx-auto w-full flex flex-col gap-12">
             {!currentSessionId || messages.length === 0 ? (
               <div className="h-[70vh] flex flex-col items-center justify-center text-center space-y-8 animate-in fade-in duration-700">
-                <div className="w-20 h-20 bg-gradient-to-br from-[#ff3366] to-[#ff1a53] rounded-3xl flex items-center justify-center shadow-2xl shadow-[#ff3366]/20 rotate-3">
-                    <i className="fas fa-brain text-white text-4xl"></i>
+                <div className="relative">
+                    {/* Glowing Aura */}
+                    <div className="absolute inset-0 bg-[#ff3366]/20 blur-[60px] rounded-full animate-pulse"></div>
+                    {/* The Logo Icon */}
+                    <div className="relative w-24 h-24 bg-gradient-to-br from-[#ff3366] via-[#ff3366] to-[#7000ff] rounded-[2rem] flex items-center justify-center shadow-2xl shadow-[#ff3366]/30 rotate-6 transform transition-transform hover:rotate-0 duration-500 border border-white/20">
+                        <i className="fas fa-laptop-code text-white text-4xl"></i>
+                        {/* Smaller secondary floating icon */}
+                        <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-[#08080a] border border-white/10 rounded-xl flex items-center justify-center shadow-xl">
+                            <i className="fas fa-microchip text-[#ff3366] text-sm"></i>
+                        </div>
+                    </div>
                 </div>
+                
                 <div className="space-y-3">
                     <h1 className="text-4xl md:text-6xl font-black text-white leading-tight tracking-tighter">
-                      Master <span className="text-[#ff3366]">DSA</span> Mentor.
+                      DSA Master <span className="text-[#ff3366]">Pro</span>.
                     </h1>
-                    <p className="text-gray-500 text-sm md:text-base max-w-md mx-auto leading-relaxed">Solve complex problems from LeetCode, GFG, and Codeforces with full intuition, dry runs, and optimized solutions.</p>
+                    <p className="text-gray-500 text-sm md:text-base max-w-md mx-auto leading-relaxed font-medium">
+                        Accelerate your coding interview preparation with high-fidelity algorithmic insights and C++ masterclasses.
+                    </p>
                 </div>
+                
                 <div className="flex flex-wrap justify-center gap-3">
                   {["Sliding Window Pattern", "LRU Cache Design", "Graph Cycle Detection"].map(tag => (
                     <button key={tag} onClick={() => handleSendMessage(`Masterclass on ${tag}`)} className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black text-gray-500 hover:border-[#ff3366]/50 hover:text-white hover:bg-[#ff3366]/5 transition-all uppercase tracking-widest">{tag}</button>
