@@ -35,7 +35,7 @@ npm run dev
    - **Build Command:** `npm run build`
    - **Output Directory:** `dist`
 
-## 🧠 Tech Stack
+## Tech Stack
 - **Frontend:** React 19 + Tailwind CSS
 - **Intelligence:** Google Gemini 3 (Pro for Reasoning, Flash for Tools)
 - **Bundler:** Vite
