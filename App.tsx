@@ -134,6 +134,7 @@ const App: React.FC = () => {
   };
 
   const currentSession = sessions.find(s => s.id === currentSessionId);
+  const messages = currentSession?.messages || [];
 
   return (
     <div className="flex h-screen w-full bg-[#08080a] text-[#f0f0f5] overflow-hidden relative">
@@ -206,7 +207,7 @@ const App: React.FC = () => {
 
         <div ref={chatContainerRef} className="flex-1 overflow-y-auto px-4 md:px-12 pt-10 pb-10 custom-scrollbar w-full">
           <div className="max-w-3xl mx-auto w-full flex flex-col gap-12">
-            {!currentSessionId || currentSession?.messages.length === 0 ? (
+            {!currentSessionId || messages.length === 0 ? (
               <div className="h-[70vh] flex flex-col items-center justify-center text-center space-y-8 animate-in fade-in duration-700">
                 <div className="w-20 h-20 bg-gradient-to-br from-[#ff3366] to-[#ff1a53] rounded-3xl flex items-center justify-center shadow-2xl shadow-[#ff3366]/20 rotate-3">
                     <i className="fas fa-brain text-white text-4xl"></i>
@@ -224,7 +225,7 @@ const App: React.FC = () => {
                 </div>
               </div>
             ) : (
-              currentSession.messages.map((msg) => (
+              messages.map((msg) => (
                 <div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} animate-in fade-in slide-in-from-bottom-4 duration-500`}>
                   <div className={`
                     w-full sm:max-w-[90%] md:max-w-[85%] p-6 md:p-8 rounded-3xl text-sm md:text-[15px] leading-[1.8]
