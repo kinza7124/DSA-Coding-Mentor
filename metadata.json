@@ -1,0 +1,20 @@
+{
+  "name": "DSA Mentor Pro",
+  "short_name": "DSAMentor",
+  "description": "Premium AI-powered Data Structures and Algorithms masterclass. Get intuition, dry runs, and optimized solutions for LeetCode, GFG, and Codeforces.",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2103/2103633.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ff3366",
+  "background_color": "#08080a",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

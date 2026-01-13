@@ -1,11 +1,42 @@
-<div align="center">
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+# 🚀 DSA Mentor Pro - AI Masterclass
 
-  <h1>Built with AI Studio</h2>
+This is a premium AI-powered tutor for Data Structures and Algorithms, built with React, Vite, and Google Gemini API.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## 🛠️ Deployment Instructions
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+### 1. Local Setup
+```bash
+# Install dependencies
+npm install
 
-</div>
+# Run development server
+npm run dev
+```
+
+### 2. Deploy to GitHub
+1. Create a new repository on [GitHub](https://github.com/new).
+2. Initialize and push your code:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit: DSA Mentor Pro Ready"
+   git branch -M main
+   git remote add origin YOUR_GITHUB_REPO_URL
+   git push -u origin main
+   ```
+
+### 3. Deploy to Vercel/Netlify
+1. Connect your GitHub repository to Vercel or Netlify.
+2. In the **Environment Variables** settings:
+   - Add a variable named `API_KEY`.
+   - Set the value to your Google Gemini API Key.
+3. Use the following build settings:
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+
+## 🧠 Tech Stack
+- **Frontend:** React 19 + Tailwind CSS
+- **Intelligence:** Google Gemini 3 (Pro for Reasoning, Flash for Tools)
+- **Bundler:** Vite
+- **Icons:** FontAwesome
