@@ -58,7 +58,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
       `}>
         <button 
           onClick={() => fileInputRef.current?.click()} 
-          className="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-gray-600 hover:text-white transition-colors"
+          className="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center text-gray-500 hover:text-white transition-colors"
           disabled={disabled}
         >
           <i className="fas fa-paperclip text-sm"></i>
@@ -72,7 +72,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
           placeholder="Ask anything about DSA..."
           rows={1}
-          className="flex-1 bg-transparent border-none text-white focus:ring-0 resize-none max-h-32 py-2.5 text-sm outline-none placeholder-gray-700 font-medium"
+          className="flex-1 bg-transparent border-none text-white focus:ring-0 resize-none max-h-32 py-2.5 text-sm outline-none placeholder-gray-400 font-medium"
           disabled={disabled}
         />
         
@@ -81,7 +81,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled }) => {
           disabled={(!input.trim() && !attachment) || disabled}
           className={`
             w-10 h-10 rounded-xl flex items-center justify-center transition-all shrink-0
-            ${(!input.trim() && !attachment) || disabled ? 'bg-white/5 text-gray-800 cursor-not-allowed' : 'bg-[#ff3366] text-white shadow-lg active:scale-95'}
+            ${(!input.trim() && !attachment) || disabled 
+              ? 'bg-white/10 text-gray-500 cursor-not-allowed border border-white/5' 
+              : 'bg-[#ff3366] text-white shadow-lg active:scale-95 border border-[#ff3366]/20'}
           `}
         >
           {disabled ? <i className="fas fa-circle-notch animate-spin text-sm"></i> : <i className="fas fa-arrow-up text-sm"></i>}
