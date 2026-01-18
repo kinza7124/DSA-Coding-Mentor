@@ -1,11 +1,13 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
 import { Message, Attachment, QuizItem, Flashcard, RoadmapStep } from "../types";
-// Replace process.env.GEMINI_API_KEY with:
+
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+// Initialize the SDK once
+const genAI = new GoogleGenAI(API_KEY);
+
 /**
  * MASTER PROMPT: Defines the core behavior of the AI.
- * UPDATED: Strictly enforces C++ as the primary language.
  */
 const SYSTEM_INSTRUCTION = `You are a Master DSA Mentor and Senior Software Engineer. Your goal is to guide users through Data Structures and Algorithms with total mastery, covering platforms like LeetCode, Codeforces, and GeeksforGeeks.
 
@@ -16,45 +18,37 @@ STRICT CODE LANGUAGE RULE:
 STRICT RESPONSE STRUCTURE (Use these EXACT bold headings, NO # symbols):
 
 1. **PROBLEM ANALYSIS**
-Re-state constraints, input/output requirements, and critical edge cases (e.g., empty inputs, overflow).
-
 2. **BRUTE FORCE APPROACH**
-Explain the naive solution first. State Time/Space complexity in plain text (e.g., O(n^2)).
-
 3. **INTUITION FOR OPTIMIZATION**
-Explain the logical bridge. Why is brute force inefficient? What patterns (e.g., Greedy, DP, Mono-stack) apply?
-
 4. **DRY RUN**
-Provide a step-by-step trace using a sample input to show how the algorithm state changes.
-
 5. **OPTIMIZED C++ IMPLEMENTATION**
-Provide clean, production-grade, well-commented C++ code in a \`\`\`cpp block.
-
 6. **COMPLEXITY ANALYSIS**
-Final Time Complexity: O(...)
-Final Space Complexity: O(...)
-Provide clear justification.
-
 7. **MENTOR'S INTERVIEW TIPS**
-How to vocalize this logic in an interview and common follow-up questions.
 
 STRICT FORMATTING:
 - NO # headers. Use **BOLD CAPS** instead.
 - NO LaTeX/Math symbols. Use plain text (e.g., n^2).
 - Redirect non-DSA queries back to algorithms.`;
 
-const aiClient = () => new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY});
-
 export const sendMessageToGemini = async (messages: Message[], attachment?: Attachment): Promise<string> => {
-  const ai = aiClient();
+  // Use 1.5-pro for the main tutor for higher reasoning quality
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-1.5-pro",
+    systemInstruction: SYSTEM_INSTRUCTION 
+  });
+
   const lastMessage = messages[messages.length - 1];
   
+  // Prepare history (excluding current message)
   const history = messages.slice(0, -1).map(m => ({
     role: m.role === 'user' ? 'user' : 'model',
     parts: [{ text: m.content }]
   }));
 
+  const chat = model.startChat({ history });
+
   const currentParts: any[] = [{ text: lastMessage.content }];
+  
   if (attachment) {
     currentParts.push({
       inlineData: {
@@ -64,26 +58,15 @@ export const sendMessageToGemini = async (messages: Message[], attachment?: Atta
     });
   }
 
-  const contents = [...history, { role: 'user', parts: currentParts }];
-
-  const response = await ai.models.generateContent({
-    model: 'gemini-3-pro-preview',
-    contents: contents,
-    config: {
-      systemInstruction: SYSTEM_INSTRUCTION,
-      temperature: 0.3,
-    },
-  });
-
-  return response.text || "No response generated.";
+  const result = await chat.sendMessage(currentParts);
+  const response = await result.response;
+  return response.text();
 };
 
 export const generateQuizzes = async (context: string): Promise<QuizItem[]> => {
-  const ai = aiClient();
-  const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
-    contents: `Generate 3 high-quality DSA quizzes for this context. Context: ${context}`,
-    config: {
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-1.5-flash",
+    generationConfig: {
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.ARRAY,
@@ -100,15 +83,15 @@ export const generateQuizzes = async (context: string): Promise<QuizItem[]> => {
       }
     }
   });
-  return JSON.parse(response.text || "[]");
+
+  const response = await model.generateContent(`Generate 3 high-quality DSA quizzes for this context. Context: ${context}`);
+  return JSON.parse(response.response.text() || "[]");
 };
 
 export const generateFlashcards = async (context: string): Promise<Flashcard[]> => {
-  const ai = aiClient();
-  const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
-    contents: `Generate 5 flashcards for active recall. Context: ${context}`,
-    config: {
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-1.5-flash",
+    generationConfig: {
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.ARRAY,
@@ -123,15 +106,15 @@ export const generateFlashcards = async (context: string): Promise<Flashcard[]> 
       }
     }
   });
-  return JSON.parse(response.text || "[]");
+
+  const response = await model.generateContent(`Generate 5 flashcards for active recall. Context: ${context}`);
+  return JSON.parse(response.response.text() || "[]");
 };
 
 export const generateRoadmap = async (topic: string): Promise<RoadmapStep[]> => {
-  const ai = aiClient();
-  const response = await ai.models.generateContent({
-    model: 'gemini-3-flash-preview',
-    contents: `Generate a 5-step learning roadmap for: ${topic}`,
-    config: {
+  const model = genAI.getGenerativeModel({ 
+    model: "gemini-1.5-flash",
+    generationConfig: {
       responseMimeType: "application/json",
       responseSchema: {
         type: Type.ARRAY,
@@ -147,5 +130,7 @@ export const generateRoadmap = async (topic: string): Promise<RoadmapStep[]> => 
       }
     }
   });
-  return JSON.parse(response.text || "[]");
+
+  const response = await model.generateContent(`Generate a 5-step learning roadmap for: ${topic}`);
+  return JSON.parse(response.response.text() || "[]");
 };
