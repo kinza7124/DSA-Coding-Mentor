@@ -42,7 +42,7 @@ STRICT FORMATTING:
 - NO LaTeX/Math symbols. Use plain text (e.g., n^2).
 - Redirect non-DSA queries back to algorithms.`;
 
-const aiClient = () => new GoogleGenAI({});
+const aiClient = () => new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export const sendMessageToGemini = async (messages: Message[], attachment?: Attachment): Promise<string> => {
   const ai = aiClient();
