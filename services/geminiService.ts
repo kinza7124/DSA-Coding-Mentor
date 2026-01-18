@@ -1,7 +1,8 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 import { Message, Attachment, QuizItem, Flashcard, RoadmapStep } from "../types";
-
+// Replace process.env.GEMINI_API_KEY with:
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 /**
  * MASTER PROMPT: Defines the core behavior of the AI.
  * UPDATED: Strictly enforces C++ as the primary language.
@@ -42,7 +43,7 @@ STRICT FORMATTING:
 - NO LaTeX/Math symbols. Use plain text (e.g., n^2).
 - Redirect non-DSA queries back to algorithms.`;
 
-const aiClient = () => new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const aiClient = () => new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY});
 
 export const sendMessageToGemini = async (messages: Message[], attachment?: Attachment): Promise<string> => {
   const ai = aiClient();
