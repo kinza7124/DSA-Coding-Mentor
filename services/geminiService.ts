@@ -1,11 +1,14 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Message, Attachment, QuizItem, Flashcard, RoadmapStep } from "../types";
+import { GoogleGenAI, Type } from "@google/genai";
+import { Message, Attachment, QuizItem, Flashcard, RoadmapStep } from "../types";
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+// bypass TS check for import.meta.env
+const env = (import.meta as any).env;
+const API_KEY = env.VITE_GEMINI_API_KEY;
 
-// Initialize the SDK once
+// Initialize the SDK
 const genAI = new GoogleGenAI(API_KEY);
-
 /**
  * MASTER PROMPT: Defines the core behavior of the AI.
  */
